@@ -18,7 +18,7 @@ COLUMN_ORDER = [
     "customer_id", "name", "username", "email", "phone", "website",
     "address_street", "address_suite", "address_city", "address_zipcode",
     "address_geo_lat", "address_geo_lng",
-    "company_name", "company_catchPhrase", "company_bs",
+    "company_name", "company_catchphrase", "company_bs",
 ]
 
 
@@ -85,6 +85,8 @@ def flatten_user(user, parent_key="", sep="_"):
 # Task 6
 def to_dataframe(flat_users):
     df = pd.DataFrame(flat_users).rename(columns={"id": "customer_id"})
+    df = pd.DataFrame(flat_users).rename(columns={"id": "customer_id"})
+    df.columns = [c.lower() for c in df.columns]   # enforce lower_snake_case
     for col in ["address_geo_lat", "address_geo_lng"]:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
