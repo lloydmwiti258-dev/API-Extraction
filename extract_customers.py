@@ -85,7 +85,6 @@ def flatten_user(user, parent_key="", sep="_"):
 # Task 6
 def to_dataframe(flat_users):
     df = pd.DataFrame(flat_users).rename(columns={"id": "customer_id"})
-    df = pd.DataFrame(flat_users).rename(columns={"id": "customer_id"})
     df.columns = [c.lower() for c in df.columns]   # enforce lower_snake_case
     for col in ["address_geo_lat", "address_geo_lng"]:
         if col in df.columns:
