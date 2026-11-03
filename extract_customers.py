@@ -22,7 +22,7 @@ COLUMN_ORDER = [
 ]
 
 
-# Task 1
+# Task 1: Fetch data from an API
 def fetch_users(url=API_URL, timeout=10):
     response = requests.get(url, timeout=timeout)
     if response.status_code != 200:
@@ -31,7 +31,7 @@ def fetch_users(url=API_URL, timeout=10):
     return response.json()
 
 
-# Task 2
+# Task 2: Describe the structure of the API response
 def describe_structure(payload):
     print("Top-level type:", type(payload).__name__)
     record = payload[0]
@@ -45,7 +45,7 @@ def describe_structure(payload):
     walk(record)
 
 
-# Task 3
+# Task 3: Extract core fields from user data
 def extract_core_fields(users):
     return [
         {
@@ -59,7 +59,7 @@ def extract_core_fields(users):
     ]
 
 
-# Task 4
+# Task 4: Build data structures from user data
 def build_structures(users):
     names = [u.get("name", DEFAULT) for u in users]                 # list comprehension
     id_city = {u.get("id"): (u.get("address") or {}).get("city", DEFAULT)
@@ -70,7 +70,7 @@ def build_structures(users):
     return names, id_email, id_city
 
 
-# Task 5
+# Task 5: Flatten nested user data
 def flatten_user(user, parent_key="", sep="_"):
     flat = {}
     for key, value in user.items():
@@ -82,7 +82,7 @@ def flatten_user(user, parent_key="", sep="_"):
     return flat
 
 
-# Task 6
+# Task 6: Convert flattened user data to a DataFrame
 def to_dataframe(flat_users):
     df = pd.DataFrame(flat_users).rename(columns={"id": "customer_id"})
     df.columns = [c.lower() for c in df.columns]   # enforce lower_snake_case
@@ -97,14 +97,14 @@ def to_dataframe(flat_users):
     return df
 
 
-# Task 7
+# Task 7: Export the DataFrame to a CSV file
 def export_csv(df, path=OUTPUT_PATH):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     df.to_csv(path, index=False)        # mode 'w' -> overwrites on re-run
     print(f"Saved {len(df)} rows to {path}")
 
 
-# Task 8
+# Task 8: Main execution function
 def main():
     url = sys.argv[1] if len(sys.argv) > 1 else API_URL
     timeout = float(sys.argv[2]) if len(sys.argv) > 2 else 10
